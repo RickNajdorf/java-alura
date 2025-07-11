@@ -1,13 +1,12 @@
 package br.com.alura.screenmatch;
 
+import br.com.alura.screenmatch.excecao.ErroFormatacaoAPI;
 import br.com.alura.screenmatch.modelos.TituloOMDB;
 import com.google.gson.annotations.SerializedName;
 
 public class Titulo implements Comparable<Titulo> {
 
-    @SerializedName("Title")
     private String nome;
-    @SerializedName("Year")
     private int lancamento;
     private boolean incluidoNoPlano;
     private double somaAvaliacao;
@@ -21,6 +20,10 @@ public class Titulo implements Comparable<Titulo> {
 
     public Titulo(TituloOMDB meuTituloOMDB) {
         this.nome = meuTituloOMDB.title();
+
+        if (meuTituloOMDB.year().length() > 4){
+            throw  new ErroFormatacaoAPI("Não consegui converter o ano fornecido pela API, mais de 4 caracteres");
+        }
         this.lancamento = Integer.valueOf(meuTituloOMDB.year());
         this.duracao = Integer.valueOf(meuTituloOMDB.runtime().substring(0,2));
     }
